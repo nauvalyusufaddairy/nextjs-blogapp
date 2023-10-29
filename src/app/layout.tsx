@@ -4,13 +4,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Footer from "@/components/footer/Footer";
 
-import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import { ThemeContextProvider } from "@/context/ThemeContext";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import AuthProvider from "@/provider/AuthProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin-ext"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

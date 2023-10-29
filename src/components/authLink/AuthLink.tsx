@@ -2,22 +2,27 @@
 import Link from "next/link";
 import styles from "./authLink.module.css";
 import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 
-export default function AuthLink() {
-  const status = "notauthenticated";
+const AuthLinks = () => {
   const [open, setOpen] = useState(false);
 
+  const { status } = useSession();
+
   return (
-    <div>
-      {/* @ts-ignore */}
-      {status === "notauthenticated" ? (
-        <Link href={"/login"} className={styles.link}>
+    <>
+      {status === "unauthenticated" ? (
+        <Link href="/login" className={styles.link}>
           Login
         </Link>
       ) : (
         <>
-          <Link href={"/write"}>Write</Link>
-          <span className={styles.link}>logout</span>
+          <Link href="/write" className={styles.link}>
+            Write
+          </Link>
+          <span className={styles.link} onClick={() => signOut()}>
+            Logout
+          </span>
         </>
       )}
       <div className={styles.burger} onClick={() => setOpen(!open)}>
@@ -27,19 +32,23 @@ export default function AuthLink() {
       </div>
       {open && (
         <div className={styles.responsiveMenu}>
-          <Link href={"/"}>Homepage</Link>
-          <Link href={"/"}>About</Link>
-          <Link href={"/"}>Contact</Link>
-          {status === "notauthenticated" ? (
-            <Link href={"/login"}>Login</Link>
+          <Link href="/">Homepage</Link>
+          <Link href="/">About</Link>
+          <Link href="/">Contact</Link>
+          {status === "unauthenticated" ? (
+            <Link href="/login">Login</Link>
           ) : (
             <>
-              <Link href={"/write"}>Write</Link>
-              <span className={styles.link}>logout</span>
+              <Link href="/write">Write</Link>
+              <span onClick={() => signOut} className={styles.link}>
+                Logout
+              </span>
             </>
           )}
         </div>
       )}
-    </div>
+    </>
   );
-}
+};
+
+export default AuthLinks;
