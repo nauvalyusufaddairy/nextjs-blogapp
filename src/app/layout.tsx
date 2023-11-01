@@ -9,7 +9,7 @@ import { ThemeContextProvider } from "@/context/ThemeContext";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import AuthProvider from "@/provider/AuthProvider";
 
-const inter = Inter({ subsets: ["latin-ext"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
