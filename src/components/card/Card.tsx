@@ -2,27 +2,22 @@ import Link from "next/link";
 import styles from "./card.module.css";
 import Image from "next/image";
 
-export default function Card() {
+export default function Card({ key, item }: { key: string; item: Post }) {
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
-        <Image src="/p1.jpeg" fill alt="" className={styles.image} />
+        <Image src={item.img ?? ""} fill alt="" className={styles.image} />
       </div>
       <div className={styles.textContainer}>
         <div className={styles.detail}>
-          <span className={styles.date}>11.02.2023</span>
-          <span className={styles.category}>culture</span>
+          <span className={styles.date}>{item.createdAt}</span>
+          <span className={styles.category}>{item.catSlug}</span>
         </div>
         <Link href={"/"}>
-          <h1>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</h1>
+          <h1>{item.title}</h1>
         </Link>
 
-        <p className={styles.desc}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti est
-          illum minima delectus autem laboriosam consequuntur tempore repellat
-          hic, ad nesciunt placeat rem neque, consequatur eos cum nostrum
-          repudiandae totam!
-        </p>
+        <p className={styles.desc}>{item.desc}</p>
         <Link className={styles.link} href={"/"}>
           Read more
         </Link>
