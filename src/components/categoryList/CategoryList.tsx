@@ -16,12 +16,13 @@ const getData = async () => {
 };
 
 const CategoryList = async () => {
-  const data = await getData();
+  const data: any = await getData();
+  console.log("datasss", data);
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Popular Categories</h1>
       <div className={styles.categories}>
-        {data?.map((item: any) => (
+        {data.res.map((item: any) => (
           <Link
             href="/blog?cat=style"
             className={`${styles.category} ${styles[item.slug]}`}
