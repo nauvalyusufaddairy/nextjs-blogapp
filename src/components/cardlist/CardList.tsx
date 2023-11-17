@@ -7,7 +7,7 @@ export default async function Cardlist({ page }: { page: string }) {
   const { posts, count } = await getData(page);
   const POST_PER_PAGE = 2;
   const pageInt = parseInt(page);
-
+  console.log("=============================", count, pageInt);
   const hasPrev = POST_PER_PAGE * (pageInt - 1) > 0;
   const hasNext = POST_PER_PAGE * (pageInt - 1) + POST_PER_PAGE < count;
 

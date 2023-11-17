@@ -16,13 +16,13 @@ export default function Pagination({
   return (
     <div className={styles.container}>
       <button
-        disabled={hasPrev}
+        disabled={!hasPrev}
         onClick={() => router.push(`?page=${pageInt - 1}`)}
         className={styles.button}>
         Prev
       </button>
       <button
-        disabled={hasNext}
+        disabled={!hasNext}
         onClick={() => router.push(`?page=${pageInt + 1}`)}
         className={styles.button}>
         Next
