@@ -22,9 +22,9 @@ const CategoryList = async () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Popular Categories</h1>
       <div className={styles.categories}>
-        {data.res.map((item: any) => (
+        {data?.res.map((item: Category) => (
           <Link
-            href="/blog?cat=style"
+            href={`/blog?cat=${item.slug}`}
             className={`${styles.category} ${styles[item.slug]}`}
             key={item._id}>
             {item.img && (
