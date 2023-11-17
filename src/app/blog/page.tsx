@@ -1,14 +1,21 @@
-import Cardlist from "@/components/cardlist/CardList";
+import CardList from "../../components/cardlist/CardList";
 import styles from "./blogPage.module.css";
-import Menu from "@/components/menu/Menu";
-export default function BlogPage() {
+import Menu from "../../components/menu/Menu";
+
+const BlogPage = ({ searchParams }: { searchParams: any }) => {
+  const page = searchParams.page ?? "1";
+
+  const { cat } = searchParams;
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Style Blog</h1>
+      <h1 className={styles.title}>{cat} Blog</h1>
       <div className={styles.content}>
-        <Cardlist />
+        <CardList page={page} cat={cat} />
         <Menu />
       </div>
     </div>
   );
-}
+};
+
+export default BlogPage;

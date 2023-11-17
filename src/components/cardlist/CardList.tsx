@@ -3,8 +3,14 @@ import Pagination from "../pagination/Pagination";
 import styles from "./cardlist.module.css";
 import Image from "next/image";
 
-export default async function Cardlist({ page }: { page: string }) {
-  const { posts, count } = await getData(page);
+export default async function Cardlist({
+  page,
+  cat,
+}: {
+  page: string;
+  cat: string;
+}) {
+  const { posts, count } = await getData(page, cat);
   const POST_PER_PAGE = 2;
   const pageInt = parseInt(page);
   console.log("=============================", count, pageInt);
@@ -23,10 +29,13 @@ export default async function Cardlist({ page }: { page: string }) {
     </div>
   );
 }
-const getData = async (page: string) => {
-  const res = await fetch(`http://localhost:3000/api/posts?page=${page}`, {
-    cache: "no-store",
-  });
+const getData = async (page: string, cat: string) => {
+  const res = await fetch(
+    `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed");

@@ -1,7 +1,7 @@
 import styles from "./comments.module.css";
 import Link from "next/link";
 import Image from "next/image";
-export default function Comments() {
+export default function Comments({ postSlug }: { postSlug: any }) {
   const status = "authenticated";
   return (
     <div className={styles.container}>
