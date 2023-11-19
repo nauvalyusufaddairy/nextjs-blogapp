@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { AuthOptions } from "next-auth";
+import { AuthOptions, getServerSession } from "next-auth";
 import { Prisma } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import GithubProvider from "next-auth/providers/github";
@@ -9,11 +9,7 @@ import prisma from "./connect";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
-  callbacks: {
-    signIn({ account, user }) {
-      return true;
-    },
-  },
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -25,3 +21,4 @@ export const authOptions: AuthOptions = {
     }),
   ],
 };
+export const getAuth = () => getServerSession(authOptions);
