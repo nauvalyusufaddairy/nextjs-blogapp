@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/utils/connect";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
@@ -22,5 +24,30 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
   } catch (err) {
     return new NextResponse(JSON.stringify({ err }), { status: 500 });
+  }
+}
+
+// create a post if user is authenticated
+
+export async function POST(req: NextRequest, res: NextResponse) {
+  const getAuthSession = await getServerSession(authOptions);
+
+  console.log("bruh", getAuthSession);
+
+  if (!getAuthSession) {
+    return new NextResponse(
+      JSON.stringify({ message: "you are not authenticated bruh" }),
+      { status: 401 }
+    );
+  }
+  try {
+    const body = await req.json();
+    const comment = await prisma.comment.create({
+      // @ts-ignore
+      data: { ...body, userEmail: getAuthSession.user?.email },
+    });
+    return new NextResponse(JSON.stringify(comment), { status: 200 });
+  } catch (err) {
+    return new NextResponse(JSON.stringify(err), { status: 500 });
   }
 }
