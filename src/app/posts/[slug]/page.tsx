@@ -2,7 +2,8 @@ import Menu from "../../../components/menu/Menu";
 import styles from "./singlePage.module.css";
 import Image from "next/image";
 import Comments from "../../../components/comments/Comments";
-
+import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import parse from "html-react-parser";
 const getData = async (slug: string) => {
   const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
     cache: "no-store",
@@ -53,11 +54,10 @@ const SinglePage = async ({ params }: { params: any }) => {
       </div>
       <div className={styles.content}>
         <div className={styles.post}>
-          <div
-            className={styles.description}
-            // dangerouslySetInnerHTML={{ __html: data?.desc }}
-          />
           <div className={styles.comment}>
+            {/* <Editor content={data.post.desc}>{""}</Editor> */}
+
+            <div>{parse(data.post.desc)}</div>
             <Comments postSlug={slug} />
           </div>
         </div>

@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 export default function Write() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [file, setFile] = useState<File>();
+  const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
+  const [catSlug, setCatSlug] = useState("");
   const { status } = useSession();
   const router = useRouter();
 
@@ -32,10 +33,52 @@ export default function Write() {
     const url = await rafah.json();
     setImg(url.url);
   };
+  const slugify = (str: string) =>
+    str
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const handleSubmit = async () => {
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        desc: value,
+        img: img,
+        slug: slugify(title),
+        catSlug: catSlug || "style", //If not selected, choose the general category
+      }),
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      router.push(`/posts/${data.slug}`);
+    }
+  };
+
   console.log("imaaaage", img);
   return (
     <div className={styles.container}>
-      <input type="text" placeholder="Title" className={styles.input} />
+      <input
+        type="text"
+        placeholder="Title"
+        className={styles.input}
+        onChange={(r) => setTitle(r.target.value)}
+      />
+      <select
+        className={styles.select}
+        onChange={(e) => setCatSlug(e.target.value)}
+      >
+        <option value="style">style</option>
+        <option value="fashion">fashion</option>
+        <option value="food">food</option>
+        <option value="culture">culture</option>
+        <option value="travel">travel</option>
+        <option value="coding">coding</option>{" "}
+      </select>
       <div className={styles.editor}>
         <button className={styles.button} onClick={() => setOpen(!open)}>
           <Image src={"/plus.png"} alt="" width={16} height={16} />
@@ -70,7 +113,10 @@ export default function Write() {
           placeholder="Tell your stories..."
         />
       </div>
-      <button className={styles.publish}>Publish</button>
+
+      <button onClick={handleSubmit} className={styles.publish}>
+        Publish
+      </button>
     </div>
   );
 }

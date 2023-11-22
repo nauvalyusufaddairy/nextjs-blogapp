@@ -32,8 +32,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(req: NextRequest, res: NextResponse) {
   const getAuthSession = await getServerSession(authOptions);
 
-  console.log("bruh", getAuthSession);
-
   if (!getAuthSession) {
     return new NextResponse(
       JSON.stringify({ message: "you are not authenticated bruh" }),
@@ -42,10 +40,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
   try {
     const body = await req.json();
-    const comment = await prisma.comment.create({
+    const comment = await prisma.post.create({
       // @ts-ignore
       data: { ...body, userEmail: getAuthSession.user?.email },
     });
+    console.log(comment);
     return new NextResponse(JSON.stringify(comment), { status: 200 });
   } catch (err) {
     return new NextResponse(JSON.stringify(err), { status: 500 });
